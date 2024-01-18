@@ -10,7 +10,7 @@ namespace API.Controllers
 	[Route("api/[controller]")]
 	public class ProductsController : ControllerBase
 	{
-		//Using underscore when naming the var of private 
+		//Using underscore when naming the private variables
 		private readonly StoreContext _context;
 		public ProductsController(StoreContext context)
 		{
