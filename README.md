@@ -1,2 +1,2 @@
 # ReStore
-Project for React + .NET framework 
+Project for learning React + .NET framework 
