@@ -2,6 +2,7 @@ import Catalog from "../../features/catalog/Catalog";
 import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import Header from "./Header";
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
 
 function App() {
@@ -24,15 +25,15 @@ function App() {
     setDarkMode(!darkMode);
   }
 
+
+  //Sau khi đã thêm react router vào thì ta phải sử dụng Outlet để load từ root của react 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>  
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange}/>
       <Container>
-        <Catalog />
-      </Container>
-    
-      
+        <Outlet />
+      </Container>  
     </ThemeProvider>
   );
 }
