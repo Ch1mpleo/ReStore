@@ -1,5 +1,6 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography, colors } from "@mui/material";
 import { Product } from "../../App/models/product";
+import { Link } from "react-router-dom";
 
 //Phần liệt kê cho 1 product 
 
@@ -43,7 +44,9 @@ export default function ProductCard({ product }: Props) {
       </CardContent>
       <CardActions>
         <Button size="small">Add to cart</Button>
-        <Button size="small">View</Button>
+
+        {/** Dùng `` để dùng được js trong text như bên dưới*/}
+        <Button component={Link} to={`/catalog/${product.id}`} size="small">View</Button>
       </CardActions>
     </Card>
   );
