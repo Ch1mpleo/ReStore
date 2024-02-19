@@ -45,7 +45,7 @@ export default function ProductCard({ product }: Props) {
       <CardActions>
         <Button size="small">Add to cart</Button>
 
-        {/** Dùng `` để dùng được js trong text như bên dưới*/}
+        {/** Dùng `` và $ để dùng được js trong text như bên dưới*/}
         <Button component={Link} to={`/catalog/${product.id}`} size="small">View</Button>
       </CardActions>
     </Card>

@@ -28,12 +28,15 @@ function App() {
 
   //Sau khi đã thêm react router vào thì ta phải sử dụng Outlet để load từ root của react 
   return (
+    //ThemeProvider để add theme cho cả web, đọc description của nó
     <ThemeProvider theme={theme}>
       <CssBaseline/>  
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange}/>
+
       <Container>
         <Outlet />
       </Container>  
+      
     </ThemeProvider>
   );
 }

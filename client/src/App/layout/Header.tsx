@@ -3,7 +3,7 @@ import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typogr
 import { NavLink } from "react-router-dom";
 
 
-//Tạo 1 array chứa những header link sẽ dẫn đến những page khác
+//Tạo 1 array chứa những router sẽ dẫn đến những page khác
 const midLinks = [
     { title: 'Catalog', path: '/catalog' },
     { title: 'About', path: '/about' },
@@ -38,9 +38,11 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
 
                 {/** Trong box có thể sử dụng các thuộc tính thông thường mà ko cần sx */}
+
+                {/** Chứa logo restore và switch chuyển dark mode  */}
                 <Box display={"flex"} alignItems={"center"}>
                     <Typography
-                        variant="h4"
+                        variant="h5"
                         component={NavLink}
                         to='/'
                         sx={navStyle}
@@ -50,8 +52,11 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
                     <Switch checked={darkMode} onChange={handleThemeChange} />
                 </Box>
 
+
+                {/** Chứa catalog, about, contact */}
                 <Box>
                     <List sx={{ display: 'flex' }}>
+                        {/* Dùng map để loop qua mảng midLinks đã khai báo trên */}
                         {midLinks.map(({ title, path }) => (
                             <ListItem
                                 component={NavLink}
@@ -65,7 +70,7 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
                     </List>
                 </Box>
 
-
+                 {/** Chứa logo cart, login, register */}
                 <Box display={"flex"} alignItems={"center"}>
                     <IconButton size='large' edge='start' color='inherit' sx={{ mr: 2 }}>
                         <Badge badgeContent='4' color='secondary'>

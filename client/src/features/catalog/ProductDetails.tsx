@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -7,17 +7,19 @@ import { Product } from "../../App/models/product";
 
 //Detail của riêng từng sản phẩm 
 export default function ProductDetails() {
+    //Cho id là string vì id lúc này nằm trên URL
     const {id} = useParams<{id: string}>();
 
     //Cho product có type là Product hoặc là null, và đặt giá trị khởi tạo là null 
-    const [product, setProducts] = useState<Product | null>(null);
+    const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
 
     //Khi đã sử dụng useEffect phải luôn thêm dependency ở cuối nếu ko nó sẽ lặp liện tục
     //Trong đây thì thêm id vì khi vào trang detail id sẽ ko thể thay đổi 
+    //Dùng axios để GET data
     useEffect(() => {
-        axios.get(`http:localhost:5000/api/products/${id}`)
-            .then(response => setProducts(response.data))
+        axios.get(`http://localhost:5000/api/Products/${id}`)
+            .then(response => setProduct(response.data))
             .catch(error => console.log(error))
             .finally(() => setLoading(false))
             //dùng callback () để gọi lại useEffect khi chưa load được data
@@ -27,9 +29,46 @@ export default function ProductDetails() {
     if (!product) return <h3>Product not found</h3>
 
     return(
-        <Typography variant="h2">
-            {product.name}
-        </Typography>
+        <Grid container spacing = {6}>
+            <Grid item xs={6}>
+                <img src={product.pictureUrl} alt={product.name} style={{width: '100%'}}/>
+            </Grid>
+            <Grid item xs={6}>
+                <Typography variant="h3" mb={2}> {product.name} </Typography>
+                <Divider sx={{mb: 2}}/>
+                {/** Chia tiền cho 100 xong lấy 2 số thập phân*/}
+                <Typography variant="h4" color='secondary'> ${(product.price / 100).toFixed(2)} </Typography>
+                
+                <TableContainer>
+                    <Table>
+                        <TableBody>
+
+                            <TableRow>
+                                <TableCell>Name</TableCell>
+                                <TableCell>{product.name}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Description</TableCell>
+                                <TableCell>{product.description}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Brand</TableCell>
+                                <TableCell>{product.brand}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Type</TableCell>
+                                <TableCell>{product.type}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Quantity</TableCell>
+                                <TableCell>{product.quantityInStock}</TableCell>
+                            </TableRow>
+                            
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Grid>
+        </Grid>
     )
 }
 
