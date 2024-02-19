@@ -14,7 +14,7 @@ export default function ProductDetails() {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
 
-    //Khi đã sử dụng useEffect phải luôn thêm dependency ở cuối nếu ko nó sẽ lặp liện tục
+    //Khi đã sử dụng useEffect phải luôn thêm dependency ở cuối nếu ko nó sẽ lặp liên tục
     //Trong đây thì thêm id vì khi vào trang detail id sẽ ko thể thay đổi 
     //Dùng axios để GET data
     useEffect(() => {
@@ -35,6 +35,7 @@ export default function ProductDetails() {
             </Grid>
             <Grid item xs={6}>
                 <Typography variant="h3" mb={2}> {product.name} </Typography>
+                {/** Divider */}
                 <Divider sx={{mb: 2}}/>
                 {/** Chia tiền cho 100 xong lấy 2 số thập phân*/}
                 <Typography variant="h4" color='secondary'> ${(product.price / 100).toFixed(2)} </Typography>
