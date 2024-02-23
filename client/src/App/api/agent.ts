@@ -1,17 +1,22 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
+import { router } from "../../router/Routes";
 
 /** Centralising axios request sẽ gộp chung các axios lại với nhau, khi 1 project có nhiều API
  * 
  */
 
+// Khởi tạo hàm sleep để delay lại web trong 1 giây
+const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
 axios.defaults.baseURL = 'http://localhost:5000/api/';
 
 const responseBody = (response: AxiosResponse) => response.data;
 
 // Sử dụng axios interceptor để catch lỗi 
-axios.interceptors.response.use(Response => {
+// Thêm async để tạo hàm bất đồng bộ, await chỉ đi với hàm async
+axios.interceptors.response.use(async Response => {
+    await sleep();
     return Response
 }, (error: AxiosError) => {
     {/** Dùng toast để thông báo ra lỗi trên UI */}
@@ -21,14 +26,15 @@ axios.interceptors.response.use(Response => {
             toast.error(data.title)
             break;
         case 400: 
-            if (data.error) {
-                const modelStateError: string[] = []; //Khởi tạo 1 mảng rỗng 
-                for (const key in data.error) {
-                    if (data.error[key]) {
-                        modelStateError.push(data.error[key])
+        //Phải dùng data.errors có s mới ko lỗi
+            if (data.errors) {
+                const modelStateErrors: string[] = []; //Khởi tạo 1 mảng rỗng 
+                for (const key in data.errors) {
+                    if (data.errors[key]) {
+                        modelStateErrors.push(data.errors[key])
                     }
                 }
-                throw modelStateError.flat();
+                throw modelStateErrors.flat();
             }
             toast.error(data.title)
             break;
@@ -36,7 +42,9 @@ axios.interceptors.response.use(Response => {
             toast.error(data.title)
             break;
         case 500: 
-            toast.error(data.title)
+            //vì đang ko phải trong file react nên phải dùng router để chuyển hướng
+            //Sau đó pass data về lỗi qua UI bằng cách sử dụng state
+            router.navigate('/server-error', {state: {error: data}});
             break;
         default: 
             break;

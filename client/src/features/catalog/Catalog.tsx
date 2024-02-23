@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { Product } from "../../App/models/product"
 import ProductList from "./ProductList";
 import agent from "../../App/api/agent";
+import LoadingComponent from "../../App/layout/LoadingComponent";
 
 
 
@@ -21,12 +22,17 @@ import agent from "../../App/api/agent";
 //Kỹ thuật gọi là: Destructuring
 export default function Catalog() {
     const [products, setProducts] = useState<Product[]>([]);
-
+    const [loading, setLoading] = useState(true);
 
     //Thay fetch bằng agent sẽ gọn hơn
     useEffect(() => {
-        agent.Catalog.list().then(products => setProducts(products))
+        agent.Catalog.list()
+            .then(products => setProducts(products))
+            .catch(error => console.log(error))
+            .finally(() => setLoading(false))
     }, []);
+
+    if (loading) return <LoadingComponent message="Loading products..."/>
 
     return (
         <>

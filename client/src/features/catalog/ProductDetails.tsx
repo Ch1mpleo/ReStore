@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Product } from "../../App/models/product";
 import agent from "../../App/api/agent";
+import NotFound from "../../App/errors/NotFound";
+import LoadingComponent from "../../App/layout/LoadingComponent";
 
 
 //Detail của riêng từng sản phẩm 
@@ -28,8 +30,8 @@ export default function ProductDetails() {
             //dùng callback () để gọi lại useEffect khi chưa load được data
     }, [id])
 
-    if (loading) return <h3>Loading...</h3>
-    if (!product) return <h3>Product not found</h3>
+    if (loading) return <LoadingComponent message="Loading product for you..."/>
+    if (!product) return <NotFound/>
 
     return(
         <Grid container spacing = {6}>
