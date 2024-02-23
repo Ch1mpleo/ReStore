@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 //Tạo 1 array chứa những router sẽ dẫn đến những page khác
 const midLinks = [
     { title: 'Catalog', path: '/catalog' },
-    { title: 'About', path: '/about' },
+    { title: 'Test', path: '/test-error' },
     { title: 'Contact', path: '/contact' }
 ]
 const rightLinks = [

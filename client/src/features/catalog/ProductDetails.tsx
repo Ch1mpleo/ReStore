@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Product } from "../../App/models/product";
+import agent from "../../App/api/agent";
 
 
 //Detail của riêng từng sản phẩm 
@@ -17,9 +18,11 @@ export default function ProductDetails() {
     //Khi đã sử dụng useEffect phải luôn thêm dependency ở cuối nếu ko nó sẽ lặp liên tục
     //Trong đây thì thêm id vì khi vào trang detail id sẽ ko thể thay đổi 
     //Dùng axios để GET data
+
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/Products/${id}`)
-            .then(response => setProduct(response.data))
+        //chỉ được execute khi id có value bên trong để tránh báo lỗi
+        id && agent.Catalog.details(parseInt(id))
+            .then(response => setProduct(response))
             .catch(error => console.log(error))
             .finally(() => setLoading(false))
             //dùng callback () để gọi lại useEffect khi chưa load được data
