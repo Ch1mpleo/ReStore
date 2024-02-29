@@ -1,5 +1,4 @@
 import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Product } from "../../App/models/product";
@@ -19,8 +18,7 @@ export default function ProductDetails() {
 
     //Khi đã sử dụng useEffect phải luôn thêm dependency ở cuối nếu ko nó sẽ lặp liên tục
     //Trong đây thì thêm id vì khi vào trang detail id sẽ ko thể thay đổi 
-    //Dùng axios để GET data
-
+    //Dùng axios để GET data từ API
     useEffect(() => {
         //chỉ được execute khi id có value bên trong để tránh báo lỗi
         id && agent.Catalog.details(parseInt(id))
@@ -31,6 +29,7 @@ export default function ProductDetails() {
     }, [id])
 
     if (loading) return <LoadingComponent message="Loading product for you..."/>
+    //
     if (!product) return <NotFound/>
 
     return(

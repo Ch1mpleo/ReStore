@@ -53,19 +53,22 @@ axios.interceptors.response.use(async Response => {
     return Promise.reject(error.response);
 })
 
+//Tạo 1 object requests để gộp chung các axios lại với nhau
 const requests = {
     get: (url: string) => axios.get(url).then(responseBody),
     //body dạng object
-    post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
-    put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
+    post: (url: string, body: object) => axios.post(url, body).then(responseBody),
+    put: (url: string, body: object) => axios.put(url, body).then(responseBody),
     delete: (url: string) => axios.get(url).then(responseBody),
 }
 
+//Tạo 1 object Catalog để gộp chung các requests lại với nhau
 const Catalog = {
     list: () => requests.get('Products'),
     details: (id: number) => requests.get(`Products/${id}`)
 }
 
+//Tạo 1 object TestError để gộp chung các requests lại với nhau
 const TestError = {
     Test404Error: () => requests.get('buggy/not-found'),
     TestBadRequestError: () => requests.get('buggy/bad-request'),
