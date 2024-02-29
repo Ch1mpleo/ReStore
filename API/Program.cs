@@ -31,6 +31,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+//Config Cors
 app.UseCors(opt => 
 {
 	opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");

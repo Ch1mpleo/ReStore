@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "dotnet",
+			"task": "build e:\\SelfLearning\\ReactJS_dotNet_project\\ReStore\\API\\API.csproj",
+			"file": "e:\\SelfLearning\\ReactJS_dotNet_project\\ReStore\\API\\API.csproj",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "dotnet: build e:\\SelfLearning\\ReactJS_dotNet_project\\ReStore\\API\\API.csproj"
+		}
+	]
+}
