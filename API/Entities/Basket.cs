@@ -5,35 +5,39 @@ using System.Threading.Tasks;
 
 namespace API.Entities
 {
-	public class Basket
-	{
-		public int BasketId { get; set; }
-		public int BuyerId { get; set; }
-		public List<BasketItem> Items { get; set; } = new();
-		// Initializer List để tránh null exception
-		
-		//Hàm add item vào basket có 2 tham số truyền vào là product và quantity
-		public void AddItems(Product product, int quantity) {
-			//Kiểm tra xem product đã có trong basket chưa nếu chưa thì add vào
-			//Đây là lý do phải khởi tạo list ở trên - vì nếu ko khởi tạo thì sẽ bị null exception 
-			//(ta chỉ so sánh được khi nó rỗng hoặc có tồn tại chứ ko phải null)
-			if(Items.All(Items => Items.Product.Id != product.Id)) {
-				Items.Add(new BasketItem {
-					Product = product,
-					Quantity = quantity
-				});
-			}
-			// else {
-			// 	Items.Find(Items => Items.Product.Id == product.Id).Quantity += quantity;
-			// }
-			
-			var existingItem = Items.FirstOrDefault(Items => Items.Product.Id == product.Id);
-			if (existingItem != null) existingItem.Quantity += quantity;
-		}
-		
-		
-		
-		
-	}
-}
+    public class Basket
+    {
+        public int Id { get; set; }
+        public int BuyerId { get; set; }
+        public List<BasketItem> Items { get; set; } = new();
 
+        //Hàm để add product vào basket 
+        public void AddItem(Product product, int quantity) {
+            //Kiểm tra xem product đã có trong basket chưa - Sử dụng LINQ
+            if (Items.All(item => item.ProductId != product.Id)) {
+                Items.Add(new BasketItem {
+                    Product = product,
+                    Quantity = quantity
+                });
+            }
+            // Nếu product đã có trong basket thì tăng số lượng lên
+            var existingItem = Items.FirstOrDefault(item => item.ProductId == product.Id);
+            if (existingItem != null) {
+                existingItem.Quantity += quantity;
+            }
+        }
+
+        //Hàm để remove product khỏi basket
+        public void RemoveItem(Product product, int quantity) {
+            var existingItem = Items.FirstOrDefault(item => item.ProductId == product.Id);
+            if (existingItem != null) {
+                //Nếu số lượng còn lại trong basket lớn hơn số lượng muốn remove thì giảm số lượng
+                if (existingItem.Quantity > quantity) {
+                    existingItem.Quantity -= quantity;
+                } else {
+                    Items.Remove(existingItem);
+                }
+            }
+        }
+    }
+}
