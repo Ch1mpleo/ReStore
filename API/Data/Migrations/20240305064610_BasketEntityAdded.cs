@@ -33,7 +33,6 @@ namespace API.Data.Migrations
                     ProductId = table.Column<int>(type: "INTEGER", nullable: false),
                     BasketId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
-                
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BasketItems", x => x.Id);
@@ -42,14 +41,12 @@ namespace API.Data.Migrations
                         column: x => x.BasketId,
                         principalTable: "Baskets",
                         principalColumn: "Id",
-                        //Khi xóa Basket thì xóa tất cả các BasketItem có BasketId tương ứng
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BasketItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        //Khi xóa Product thì xóa tất cả các BasketItem có ProductId tương ứng
                         onDelete: ReferentialAction.Cascade);
                 });
 

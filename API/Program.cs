@@ -34,7 +34,8 @@ if (app.Environment.IsDevelopment())
 //Config Cors
 app.UseCors(opt => 
 {
-	opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+	opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000");
+	//AllowCredentials() để cho phép gửi cookie - nếu ko có nó cookie sẽ ko được gửi và nhận ở bên react app
 });
 
 app.UseHttpsRedirection();
