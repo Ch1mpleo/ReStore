@@ -1,37 +1,48 @@
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
 import { Product } from "../../App/models/product";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import agent from "../../App/api/agent";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 //Phần liệt kê cho 1 product 
 
 interface Props {
-    product: Product;
+  product: Product;
 }
 
 
 export default function ProductCard({ product }: Props) {
-    return (
+  const [loading, setLoading] = useState(false);
+
+  function handleAddItem(productId: number) {
+    setLoading(true);
+    agent.Basket.addItem(productId)
+      .catch(error => console.log(error))
+      .finally(() => setLoading(false));
+  }
+  return (
     <Card sx={{ maxWidth: 345 }}>
-      
-      
-      <CardHeader 
-        avatar = {
-          <Avatar sx={{bgcolor: 'secondary.main'}}>
+
+
+      <CardHeader
+        avatar={
+          <Avatar sx={{ bgcolor: 'secondary.main' }}>
             {product.name.charAt(0).toUpperCase()}
           </Avatar>
         }
-        title = {product.name}
+        title={product.name}
         titleTypographyProps={{
-          sx: {fontSize: 15 , fontWeight: 'bold', color: 'primary.main'}
+          sx: { fontSize: 15, fontWeight: 'bold', color: 'primary.main' }
         }}
       />
 
 
 
       <CardMedia
-        sx={{ height: 140, backgroundSize: "contain", bgcolor: 'primary.light'}}
-        image= {product.pictureUrl}
-        title= {product.name}
+        sx={{ height: 140, backgroundSize: "contain", bgcolor: 'primary.light' }}
+        image={product.pictureUrl}
+        title={product.name}
       />
 
       <CardContent>
@@ -43,7 +54,12 @@ export default function ProductCard({ product }: Props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Add to cart</Button>
+        <LoadingButton
+          loading={loading}
+          onClick={() => handleAddItem(product.id)}
+          size="small">
+          Add to cart
+        </LoadingButton>
 
         {/** Dùng `` và $ để dùng được js trong text như bên dưới*/}
         <Button component={Link} to={`/catalog/${product.id}`} size="small">View</Button>

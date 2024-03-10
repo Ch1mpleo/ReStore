@@ -10,6 +10,8 @@ import { router } from "../../router/Routes";
 const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
 axios.defaults.baseURL = 'http://localhost:5000/api/';
+axios.defaults.withCredentials = true;
+//add credential từ 2 phía BE và FE thì mới có thể sử dụng cookie
 
 const responseBody = (response: AxiosResponse) => response.data;
 
@@ -77,9 +79,19 @@ const TestError = {
     TestServerError: () => requests.get('buggy/server-error'),
 }
 
+//Tạo 1 object Basket để gộp chung các requests lại với nhau
+const Basket = {
+    get: () => requests.get('basket'),
+    addItem: (productId: number, quantity = 1) => requests.post(`basket?productId=${productId}&quantity=${quantity}`, {}),
+    removeItem: (productId: number, quantity = 1) => requests.delete(`basket?productId=${productId}&quantity=${quantity}`)
+}
+
+//Obj agent là nơi tập hợp những object bên trên lại - gọi là centralising axios request 
 const agent = {
     Catalog,
-    TestError
+    TestError, 
+    Basket
 }
+
 
 export default agent;
