@@ -38,7 +38,6 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
 
                 {/** Trong box có thể sử dụng các thuộc tính thông thường mà ko cần sx */}
-
                 {/** Chứa logo restore và switch chuyển dark mode  */}
                 <Box display={"flex"} alignItems={"center"}>
                     <Typography

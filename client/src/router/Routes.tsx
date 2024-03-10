@@ -23,7 +23,8 @@ export const router = createBrowserRouter([
             {path: 'test-error', element: <TestErrorPage/>},
             {path: 'server-error', element: <ServerErrors/>},
             {path: 'not-found', element: <NotFound/>},
-            {path: 'baket', element: <BasketPage/>},
+            {path: 'basket', element: <BasketPage/>},
+            
             // add thêm 1 route khi vào 1 trang ko có gì bên trong -> sẽ dẫn ra page NotFound
             {path: '*', element: <Navigate replace to = '/not-found'/>},
         ]
