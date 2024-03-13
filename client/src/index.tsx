@@ -7,11 +7,14 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router/Routes.tsx';
+import { StoreProvider } from './App/context/StoreContext.tsx';
 
 // Sau khi thêm router vào -> cần phải đổi mặc định của web khi mới vào sang reactProvider
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-      <RouterProvider router={router} />
+      <StoreProvider>
+        <RouterProvider router={router} />
+      </StoreProvider>
   </React.StrictMode>
 );

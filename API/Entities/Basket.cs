@@ -8,7 +8,9 @@ namespace API.Entities
     public class Basket
     {
         public int Id { get; set; }
-        public string BuyerId { get; set; }
+        public int BuyerId { get; set; }
+        //Should I use List or ICollection?
+
         public List<BasketItem> Items { get; set; } = new();
 
         //Hàm để add product vào basket 
@@ -28,8 +30,8 @@ namespace API.Entities
         }
 
         //Hàm để remove product khỏi basket
-        public void RemoveItem(int productId, int quantity) {
-            var existingItem = Items.FirstOrDefault(item => item.ProductId == productId);
+        public void RemoveItem(Product product, int quantity) {
+            var existingItem = Items.FirstOrDefault(item => item.ProductId == product.Id);
             if (existingItem != null) {
                 //Nếu số lượng còn lại trong basket lớn hơn số lượng muốn remove thì giảm số lượng
                 if (existingItem.Quantity > quantity) {
@@ -41,3 +43,6 @@ namespace API.Entities
         }
     }
 }
+
+
+// 
