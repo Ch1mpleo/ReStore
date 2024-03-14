@@ -4,13 +4,14 @@ import { Basket } from "../models/basket";
 //Use StoreContext to centralise state
 interface StoreContextValue {
     basket: Basket | null;
-    setBasket: (basket: Basket) => null;
+    setBasket: (basket: Basket) => void;
     removeItem: (productId: number, quantity: number) => void;
 }
 
 export const StoreContext = createContext<StoreContextValue | undefined>(undefined);
 
-//Đây là 1 custom hook 
+//Đây là 1 custom hook để lấy giá trị từ StoreContext
+// eslint-disable-next-line react-refresh/only-export-components
 export function useStoreContext() {
     const context = useContext(StoreContext);
     if(context === undefined) {
@@ -21,7 +22,19 @@ export function useStoreContext() {
 
 //Hàm này để tạo ra 1 provider để wrap các component con
 //Provider là 1 component cha, nó sẽ wrap các component con và truyền giá trị xuống cho các component con
-export function StoreProvider({children}: PropsWithChildren<any>) {
+/*
+    Trong React state ko nên bị thay đổi trực tiếp - giống như việc ta đóng gói 
+      sử dụng tính đóng gói và dùng các setter để thay đổi nó - còn trong React thì 
+      ta copy nó ra 1 mảng mới và thay đổi mảng mới đó - ko thay đổi trực tiếp mảng cũ
+
+       - Do React sẽ re-rendering các components dựa vào sự thay đổi
+            + Khi 1 State được update thì React sẽ so sánh giữa State mới và State cũ 
+            để biết nên re-render ko 
+            
+       => Nên nếu ta thay đổi trực tiếp State thì React sẽ ko biết có sự cập nhật và ko
+          re-render khi có thay đổi 
+    */
+export function StoreProvider({children}: PropsWithChildren<unknown>) {
     const [basket, setBasket] = useState<Basket | null>(null);
 
     function removeItem(productId: number, quantity: number) {
@@ -34,25 +47,21 @@ export function StoreProvider({children}: PropsWithChildren<any>) {
             if (items[itemIndex].quantity === 0) items.splice(itemIndex, 1);
             setBasket(prevState => {
                 return {...prevState!, items}
-                //copy lại prevState cũ và thay đổi items cũ thành items mới
-                //dấu ! trong prevState! - là 1 dấu trong typescript để bảo đảm rằng prevState 
-                    //ko bao giờ là null hoặc undefined
+                /*
+                - copy lại prevState cũ và thay đổi items cũ thành items mới
+                - dấu ! trong prevState! - là 1 dấu trong typescript để bảo đảm rằng prevState 
+                ko bao giờ là null hoặc undefined
+                */
             })
         }
     }
 
+    return (
+        <StoreContext.Provider value={{ basket, setBasket, removeItem }}>
+            {children}
+        </StoreContext.Provider>
+    )
 
-    /*
-    Trong React state ko nên bị thay đổi trực tiếp - giống như việc ta đóng gói 
-      sử dụng tính đóng gói và dùng các setter để thay đổi nó - còn trong React thì 
-      ta copy nó ra 1 mảng mới và thay đổi mảng mới đó - ko thay đổi trực tiếp mảng cũ
-
-       - Do React sẽ re-rendering các components dựa vào sự thay đổi
-            + Khi 1 State được update thì React sẽ so sánh giữa State mới và State cũ 
-            để biết nên re-render ko 
-       => Nên nếu ta thay đổi trực tiếp State thì React sẽ ko biết có sự cập nhật và ko
-          re-render khi có thay đổi 
-    */
+    
 }
 
-export default StoreProvider;

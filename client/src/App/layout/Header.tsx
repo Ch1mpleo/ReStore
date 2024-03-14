@@ -1,6 +1,7 @@
 import { ShoppingCart } from "@mui/icons-material";
 import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
+import { useStoreContext } from "../context/StoreContext";
 
 
 //Tạo 1 array chứa những router sẽ dẫn đến những page khác
@@ -32,6 +33,15 @@ interface Props {
 }
 
 export default function Header({ darkMode, handleThemeChange }: Props) {
+
+    const {basket} = useStoreContext();
+    /* 
+    hàm reduce để tính tổng số lượng sản phẩm trong giỏ hàng - nhận vào 2 params 
+     1. là callback func - giống với delegate/anonymous func trong C# 
+     2. là giá trị khởi tạo ban đầu của sum
+    */
+    const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0)
+
     return (
         <AppBar position="static" sx={{ mb: 4 }}>
             {/** Toolbar là parent của 5 thằng child bên dưới nên ta sẽ dùng flexbox ở đây */}
@@ -72,7 +82,7 @@ export default function Header({ darkMode, handleThemeChange }: Props) {
                  {/** Chứa logo cart, login, register */}
                 <Box display={"flex"} alignItems={"center"}>
                     <IconButton component={Link} to='/basket' size='large' edge='start' color='inherit' sx={{ mr: 2 }}>
-                        <Badge badgeContent='4' color='secondary'>
+                        <Badge badgeContent={itemCount} color='secondary'>
                             <ShoppingCart />
                         </Badge>
                     </IconButton>
